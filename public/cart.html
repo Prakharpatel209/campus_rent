@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cart - RentHub</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h2>RentHub</h2>
+      </div>
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="items.html" class="nav-link">Browse Items</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+
+        <!-- Cart -->
+        <a href="cart.html" class="nav-link cart-link active">
+          <i class="fas fa-shopping-cart"></i> 
+          <span id="cart-count" class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Cart Section -->
+  <section class="cart-page">
+    <div class="container">
+      <h2>My Cart</h2>
+      <div id="cart-items" class="cart-items">
+        <!-- Items dynamically rendered here -->
+      </div>
+      <div id="cart-summary" class="cart-summary">
+        <!-- Cart summary -->
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

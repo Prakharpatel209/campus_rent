@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RentHub - Rent What You Need, When You Need It</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h2>RentHub</h2>
+      </div>
+      <div class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        
+        <!-- 🛒 Cart Icon -->
+        <a href="cart.html" class="nav-link cart-link">
+          <i class="fas fa-shopping-cart"></i> 
+          <span id="cart-count" class="cart-count">0</span>
+        </a>
+
+        <div class="nav-auth">
+          <button class="btn-secondary" onclick="showLoginModal()">Login</button>
+          <button class="btn-primary" onclick="showRegisterModal()">Sign Up</button>
+        </div>
+      </div>
+      <div class="nav-toggle" id="nav-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">Rent What You Need, When You Need It</h1>
+        <p class="hero-subtitle">Explore a wide range of quality items at your fingertips. From electronics to tools, find everything you need without the commitment of buying.</p>
+        <div class="hero-actions">
+          <button class="btn-primary btn-large" onclick="scrollToSection('categories')">Start Browsing</button>
+          <button class="btn-outline btn-large" onclick="scrollToSection('how-it-works')">Learn More</button>
+        </div>
+        <div class="trust-indicators">
+          <div class="trust-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Verified Owners</span>
+          </div>
+          <div class="trust-item">
+            <i class="fas fa-lock"></i>
+            <span>Secure Transactions</span>
+          </div>
+          <div class="trust-item">
+            <i class="fas fa-star"></i>
+            <span>Rated Items</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/rental-item.png" alt="Rental Items" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section id="categories" class="categories">
+    <div class="container">
+      <div class="section-header">
+        <h2>Browse by Category</h2>
+        <p>Find exactly what you're looking for</p>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card" data-category="Electronics">
+          <div class="category-icon"><i class="fas fa-laptop"></i></div>
+          <h3>Electronics</h3>
+          <p>Cameras, laptops, gaming consoles</p>
+          <span class="item-count">120+ items</span>
+        </div>
+        <div class="category-card" data-category="Tools">
+          <div class="category-icon"><i class="fas fa-tools"></i></div>
+          <h3>Tools</h3>
+          <p>Power tools, hand tools, equipment</p>
+          <span class="item-count">85+ items</span>
+        </div>
+        <div class="category-card" data-category="Sports">
+          <div class="category-icon"><i class="fas fa-football-ball"></i></div>
+          <h3>Sports</h3>
+          <p>Bikes, gym equipment, outdoor gear</p>
+          <span class="item-count">95+ items</span>
+        </div>
+        <div class="category-card" data-category="Furniture">
+          <div class="category-icon"><i class="fas fa-couch"></i></div>
+          <h3>Furniture</h3>
+          <p>Tables, chairs, storage solutions</p>
+          <span class="item-count">60+ items</span>
+        </div>
+        <div class="category-card" data-category="Vehicles">
+          <div class="category-icon"><i class="fas fa-car"></i></div>
+          <h3>Vehicles</h3>
+          <p>Cars, bikes, scooters</p>
+          <span class="item-count">45+ items</span>
+        </div>
+        <div class="category-card" data-category="Other">
+          <div class="category-icon"><i class="fas fa-box"></i></div>
+          <h3>Other</h3>
+          <p>Miscellaneous items</p>
+          <span class="item-count">30+ items</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Items -->
+  <section class="featured-items">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured Items</h2>
+        <p>Popular rentals in your area</p>
+      </div>
+      <div class="items-grid" id="featured-items-grid">
+        <!-- Items will be loaded dynamically -->
+        <!-- Each item will now have "Rent Now" and "Add to Cart" buttons (from script.js) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Simple steps to rent anything you need</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-icon"><i class="fas fa-search"></i></div>
+          <h3>Browse & Search</h3>
+          <p>Find the perfect item from our extensive catalog of verified listings</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-icon"><i class="fas fa-calendar-check"></i></div>
+          <h3>Book & Pay</h3>
+          <p>Select your dates and make a secure payment through our platform</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-icon"><i class="fas fa-handshake"></i></div>
+          <h3>Meet & Enjoy</h3>
+          <p>Meet the owner, pick up your item, and enjoy your rental experience</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer + Modals remain same -->
+   <!-- Footer --> <footer class="footer"> <div class="container"> <div class="footer-content"> <div class="footer-section"> <h3>RentHub</h3> <p>Making rentals simple, secure, and accessible for everyone.</p> <div class="social-links"> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> </div> </div> <div class="footer-section"> <h4>Quick Links</h4> <ul> <li><a href="#home">Home</a></li> <li><a href="#categories">Categories</a></li> <li><a href="dashboard.html">Dashboard</a></li> <li><a href="items.html">Browse Items</a></li> </ul> </div> <div class="footer-section"> <h4>Support</h4> <ul> <li><a href="#">Help Center</a></li> <li><a href="#">Safety</a></li> <li><a href="#">Terms of Service</a></li> <li><a href="#">Privacy Policy</a></li> </ul> </div> <div class="footer-section"> <h4>Contact</h4> <ul> <li><i class="fas fa-envelope"></i> support@renthub.com</li> <li><i class="fas fa-phone"></i> (555) 123-4567</li> <li><i class="fas fa-map-marker-alt"></i> 123 Rental St, City</li> </ul> </div> </div> <div class="footer-bottom"> <p>&copy; 2024 RentHub. All rights reserved.</p> </div> </div> </footer> <!-- Login Modal --> <div id="loginModal" class="modal"> <div class="modal-content"> <span class="close" onclick="closeModal('loginModal')">&times;</span> <h2>Login to RentHub</h2> <form id="loginForm"> <div class="form-group"> <label for="loginEmail">Email</label> <input type="email" id="loginEmail" required> </div> <div class="form-group"> <label for="loginPassword">Password</label> <input type="password" id="loginPassword" required> </div> <button type="submit" class="btn-primary btn-full">Login</button> </form> <p class="modal-footer">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Sign up</a></p> </div> </div> <!-- Register Modal --> <div id="registerModal" class="modal"> <div class="modal-content"> <span class="close" onclick="closeModal('registerModal')">&times;</span> <h2>Join RentHub</h2> <form id="registerForm"> <div class="form-group"> <label for="registerName">Full Name</label> <input type="text" id="registerName" required> </div> <div class="form-group"> <label for="registerEmail">Email</label> <input type="email" id="registerEmail" required> </div> <div class="form-group"> <label for="registerPhone">Phone</label> <input type="tel" id="registerPhone" required> </div> <div class="form-group"> <label for="registerPassword">Password</label> <input type="password" id="registerPassword" required> </div> <button type="submit" class="btn-primary btn-full">Sign Up</button> </form> <p class="modal-footer">Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Login</a></p> </div> </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

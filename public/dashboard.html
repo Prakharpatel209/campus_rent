@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RentHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html"><h2>RentHub</h2></a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="items.html" class="nav-link">Browse</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <div class="nav-auth">
+                    <button class="btn-secondary" onclick="showLoginModal()">Login</button>
+                    <button class="btn-primary" onclick="showRegisterModal()">Sign Up</button>
+                </div>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>My Dashboard</h1>
+                <p>Manage your items and rentals</p>
+            </div>
+
+            <!-- Dashboard Navigation -->
+            <div class="dashboard-nav">
+                <button class="dash-nav-btn active" onclick="showDashboardSection('my-items')">
+                    <i class="fas fa-box"></i>
+                    My Items
+                </button>
+                <button class="dash-nav-btn" onclick="showDashboardSection('my-rentals')">
+                    <i class="fas fa-calendar-check"></i>
+                    My Rentals
+                </button>
+                <button class="dash-nav-btn" onclick="showDashboardSection('rental-requests')">
+                    <i class="fas fa-inbox"></i>
+                    Rental Requests
+                </button>
+                <button class="dash-nav-btn" onclick="showDashboardSection('profile')">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </button>
+            </div>
+
+            <!-- My Items Section -->
+            <div id="my-items" class="dashboard-section active">
+                <div class="section-header">
+                    <h2>My Items</h2>
+                    <button class="btn-primary" onclick="showAddItemModal()">
+                        <i class="fas fa-plus"></i>
+                        Add New Item
+                    </button>
+                </div>
+                <div class="items-grid" id="myItemsGrid">
+                    <!-- User's items will be loaded here -->
+                </div>
+            </div>
+
+            <!-- My Rentals Section -->
+            <div id="my-rentals" class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Rentals</h2>
+                    <p>Items you're currently renting</p>
+                </div>
+                <div class="rentals-list" id="myRentalsList">
+                    <!-- User's rentals will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Rental Requests Section -->
+            <div id="rental-requests" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Rental Requests</h2>
+                    <p>Requests for your items</p>
+                </div>
+                <div class="requests-list" id="rentalRequestsList">
+                    <!-- Rental requests will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Profile Settings</h2>
+                    <p>Update your account information</p>
+                </div>
+                <div class="profile-form">
+                    <form id="profileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileName">Full Name</label>
+                                <input type="text" id="profileName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profilePhone">Phone</label>
+                                <input type="tel" id="profilePhone" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileAddress">Address</label>
+                            <textarea id="profileAddress" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add/Edit Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close" onclick="closeModal('addItemModal')">&times;</span>
+            <h2 id="itemModalTitle">Add New Item</h2>
+            <form id="itemForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemTitle">Item Title</label>
+                        <input type="text" id="itemTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemCategory">Category</label>
+                        <select id="itemCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Tools">Tools</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Vehicles">Vehicles</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Description</label>
+                    <textarea id="itemDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemPrice">Price per Day ($)</label>
+                        <input type="number" id="itemPrice" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemCondition">Condition</label>
+                        <select id="itemCondition" required>
+                            <option value="New">New</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Poor">Poor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemDeposit">Security Deposit ($)</label>
+                        <input type="number" id="itemDeposit" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemAvailability">Availability</label>
+                        <select id="itemAvailability">
+                            <option value="true">Available</option>
+                            <option value="false">Not Available</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="itemImages">Images</label>
+                    <input type="file" id="itemImages" multiple accept="image/*">
+                    <small>You can select multiple images</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal('addItemModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login to RentHub</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Login</button>
+            </form>
+            <p class="modal-footer">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Join RentHub</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Phone</label>
+                    <input type="tel" id="registerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Sign Up</button>
+            </form>
+            <p class="modal-footer">Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Login</a></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
