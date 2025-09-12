@@ -6,7 +6,7 @@ const cartSchema = new mongoose.Schema(
     itemId: { type: mongoose.Schema.Types.ObjectId, ref: "Item", required: true },
     quantity: { type: Number, default: 1 },
   },
-  { timestamps: true }
+  { timestamps: true ,versionKey: false}
 );
 
 module.exports = mongoose.model("Cart", cartSchema);

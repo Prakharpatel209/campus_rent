@@ -43,37 +43,38 @@ function checkAuthentication() {
   fetchCurrentUser()
 }
 console.log("dashboard js loaded")
+// Patch: Fetch current user (handle different API shapes)
+// ------------------------------
 async function fetchCurrentUser() {
   const token = localStorage.getItem("token")
-    console.log("token" , token)
+  if (!token) return false
 
   try {
     const response = await fetch(`${API_BASE}/auth/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
-      console.log("token" , token)
+    if (!response.ok) {
+      localStorage.removeItem("token")
+      return false
+    }
+    const data = await response.json()
+    // Some APIs return { user: {...} } and some return the user object directly.
+    currentUser = data.user || data || null
 
-
-    if (response.ok) {
-      currentUser = await response.json()
+    // make sure we have a valid object
+    if (currentUser && typeof currentUser === "object") {
       updateUIForLoggedInUser()
-      loadDashboardData()
+      return true
     } else {
       localStorage.removeItem("token")
-      window.location.href = "index.html"
+      currentUser = null
+      return false
     }
   } catch (error) {
     console.error("Fetch user error:", error)
-    // Show sample data for demo
-    currentUser = {
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "(555) 123-4567",
-    }
-    updateUIForLoggedInUser()
-    loadSampleData()
+    localStorage.removeItem("token")
+    currentUser = null
+    return false
   }
 }
 

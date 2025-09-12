@@ -87,7 +87,7 @@ router.get("/", auth, async (req, res) => {
 // =======================
 // Remove item from cart
 // =======================
-router.delete("/:itemId", auth, async (req, res) => {
+/*router.delete("/:itemId", auth, async (req, res) => {
   try {
     const userId = req.user.id;
     const itemId = req.params.itemId;
@@ -98,6 +98,40 @@ router.delete("/:itemId", auth, async (req, res) => {
     console.error("Cart remove error:", error.message);
     res.status(500).json({ error: "Error removing item" });
   }
+});*/
+
+// DELETE /api/cart/:itemId  -> remove the item completely from user's cart (protected)
+router.delete('/:itemId', auth, async (req, res) => {
+  try {
+    const { itemId } = req.params;
+
+    // validate
+    if (!mongoose.Types.ObjectId.isValid(itemId)) {
+      return res.status(400).json({ error: 'Invalid itemId' });
+    }
+
+    const cart = await Cart.findOne({ user: req.userId });
+    if (!cart) return res.status(404).json({ error: 'Cart not found' });
+
+    const itemExists = cart.items.some(it => it.product.toString() === itemId);
+    if (!itemExists) return res.status(404).json({ error: 'Item not in cart' });
+
+    cart.items = cart.items.filter(it => it.product.toString() !== itemId);
+
+    await cart.save();
+    await cart.populate('items.product');
+
+    return res.json({
+      ok: true,
+      message: 'Item removed from cart',
+      cart,
+    });
+  } catch (err) {
+    console.error('Cart delete error:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
 });
 
+
 module.exports = router;
+

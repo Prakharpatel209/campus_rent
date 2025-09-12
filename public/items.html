@@ -1,133 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Items - RentHub</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Items - RentHub</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <a href="index.html"><h2>RentHub</h2></a>
-            </div>
-            <div class="nav-menu" id="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="items.html" class="nav-link active">Browse</a>
-                <a href="dashboard.html" class="nav-link">Dashboard</a>
-                <div class="nav-auth">
-                    <button class="btn-secondary" onclick="showLoginModal()">Login</button>
-                    <button class="btn-primary" onclick="showRegisterModal()">Sign Up</button>
-                </div>
-            </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="index.html"><h2>RentHub</h2></a>
+      </div>
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="items.html" class="nav-link active">Browse</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <div class="nav-auth">
+          <button class="btn-secondary" onclick="showLoginModal()">Login</button>
+          <button class="btn-primary" onclick="showRegisterModal()">Sign Up</button>
         </div>
-    </nav>
+      </div>
+      <div class="nav-toggle" id="nav-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Search and Filters -->
-    <section class="search-section">
-        <div class="container">
-            <div class="search-header">
-                <h1>Find Your Perfect Rental</h1>
-                <p>Browse thousands of items available for rent in your area</p>
-            </div>
-            
-            <div class="search-bar">
-                <div class="search-input-group">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search for items...">
-                    <button class="btn-primary"  type="button" onclick="performSearch()">Search</button>
-                </div>
-            </div>
+  <!-- Search and Filters -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-header">
+        <h1>Find Your Perfect Rental</h1>
+        <p>Browse thousands of items available for rent in your area</p>
+      </div>
 
-            <div class="filters">
-                <div class="filter-group">
-                    <label>Category</label>
-                    <select id="categoryFilter">
-                        <option value="">All Categories</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Tools">Tools</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Furniture">Furniture</option>
-                        <option value="Vehicles">Vehicles</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Price Range</label>
-                    <div class="price-inputs">
-                        <input type="number" id="minPrice" placeholder="Min">
-                        <span>to</span>
-                        <input type="number" id="maxPrice" placeholder="Max">
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <label>Sort By</label>
-                    <select id="sortBy">
-                        <option value="newest">Newest First</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="price-high">Price: High to Low</option>
-                        <option value="popular">Most Popular</option>
-                    </select>
-                </div>
-                <button class="btn-outline"  type="button" onclick="applyFilters()">Apply Filters</button>
-                <button class="btn-secondary"  type="button"onclick="clearFilters()">Clear</button><!-- we have made changes -->
-
-            </div>
+      <div class="search-bar">
+        <div class="search-input-group">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search for items...">
+          <button class="btn-primary" type="button" onclick="performSearch()">Search</button>
         </div>
-    </section>
+      </div>
 
-    <!-- Items Grid -->
-    <section class="items-listing">
-        <div class="container">
-            <div class="listing-header">
-                <div class="results-info">
-                    <span id="resultsCount">Loading items...</span>
-                </div>
-            </div>
-            
-            <div class="items-grid" id="itemsGrid">
-                <!-- Items will be loaded here -->
-            </div>
-
-            <div class="pagination" id="pagination">
-                <!-- Pagination will be added here -->
-            </div>
+      <div class="filters">
+        <div class="filter-group">
+          <label>Category</label>
+          <select id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Tools">Tools</option>
+            <option value="Sports">Sports</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Vehicles">Vehicles</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>RentHub</h3>
-                    <p>Making rentals simple, secure, and accessible for everyone.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="items.html">Browse Items</a></li>
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 RentHub. All rights reserved.</p>
-            </div>
+        <div class="filter-group">
+          <label>Price Range</label>
+          <div class="price-inputs">
+            <input type="number" id="minPrice" placeholder="Min">
+            <span>to</span>
+            <input type="number" id="maxPrice" placeholder="Max">
+          </div>
         </div>
-    </footer>
 
-    <script src="script.js"></script>
-    <script src="itemsPage.js"></script>
+        <div class="filter-group">
+          <label>Sort By</label>
+          <select id="sortBy">
+            <option value="newest">Newest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="popular">Most Popular</option>
+          </select>
+        </div>
+
+        <button class="btn-outline" type="button" onclick="applyFilters()">Apply Filters</button>
+        <button class="btn-secondary" type="button" onclick="clearFilters()">Clear</button>
+        <!-- we have made changes -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Items Grid -->
+  <section class="items-listing">
+    <div class="container">
+      <div class="listing-header">
+        <div class="results-info">
+          <span id="resultsCount">Loading items...</span>
+        </div>
+      </div>
+      <div class="items-grid" id="itemsGrid">
+        <!-- Items will be loaded here -->
+      </div>
+      <div class="pagination" id="pagination">
+        <!-- Pagination will be added here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>RentHub</h3>
+          <p>Making rentals simple, secure, and accessible for everyone.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="items.html">Browse Items</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 RentHub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+   <!-- this is to be removed  -->
+   <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login to RentHub</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Login</button>
+            </form>
+            <p class="modal-footer">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Join RentHub</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Phone</label>
+                    <input type="tel" id="registerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Sign Up</button>
+            </form>
+            <p class="modal-footer">Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Login</a></p>
+        </div>
+    </div>
+
+  <script src="script.js"></script>
+  <script src="itemsPage.js"></script>
 </body>
 </html>

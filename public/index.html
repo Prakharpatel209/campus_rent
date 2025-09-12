@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RentHub - Rent What You Need, When You Need It</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -15,16 +15,20 @@
       <div class="nav-brand">
         <h2>RentHub</h2>
       </div>
+
+      <!-- NOTE: keep id="nav-menu" so script's setupMobileNav() finds it -->
       <div class="nav-menu" id="nav-menu">
         <a href="#home" class="nav-link">Home</a>
         <a href="#categories" class="nav-link">Categories</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
         <a href="dashboard.html" class="nav-link">Dashboard</a>
-        
-        <!-- 🛒 Cart Icon -->
-        <a href="cart.html" class="nav-link cart-link">
-          <i class="fas fa-shopping-cart"></i> 
-          <span id="cart-count" class="cart-count">0</span>
+
+        <!-- 🛒 Cart Icon
+             IMPORTANT: id must be "cartCount" to match script.updateCartCountUI() -->
+        <a href="cart.html" class="nav-link cart-link" aria-label="Cart">
+          <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+          <!-- id changed from cart-count to cartCount -->
+          <span id="cartCount" class="cart-count" aria-live="polite" aria-atomic="true">0</span>
         </a>
 
         <div class="nav-auth">
@@ -32,7 +36,9 @@
           <button class="btn-primary" onclick="showRegisterModal()">Sign Up</button>
         </div>
       </div>
-      <div class="nav-toggle" id="nav-toggle">
+
+      <!-- NOTE: keep id="nav-toggle" so script.setupMobileNav() finds it -->
+      <div class="nav-toggle" id="nav-toggle" aria-controls="nav-menu" aria-expanded="false" role="button" tabindex="0">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
@@ -52,15 +58,15 @@
         </div>
         <div class="trust-indicators">
           <div class="trust-item">
-            <i class="fas fa-shield-alt"></i>
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
             <span>Verified Owners</span>
           </div>
           <div class="trust-item">
-            <i class="fas fa-lock"></i>
+            <i class="fas fa-lock" aria-hidden="true"></i>
             <span>Secure Transactions</span>
           </div>
           <div class="trust-item">
-            <i class="fas fa-star"></i>
+            <i class="fas fa-star" aria-hidden="true"></i>
             <span>Rated Items</span>
           </div>
         </div>
@@ -127,8 +133,7 @@
         <p>Popular rentals in your area</p>
       </div>
       <div class="items-grid" id="featured-items-grid">
-        <!-- Items will be loaded dynamically -->
-        <!-- Each item will now have "Rent Now" and "Add to Cart" buttons (from script.js) -->
+        <!-- Items will be loaded dynamically by script.js -->
       </div>
     </div>
   </section>
@@ -163,8 +168,99 @@
     </div>
   </section>
 
-  <!-- Footer + Modals remain same -->
-   <!-- Footer --> <footer class="footer"> <div class="container"> <div class="footer-content"> <div class="footer-section"> <h3>RentHub</h3> <p>Making rentals simple, secure, and accessible for everyone.</p> <div class="social-links"> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> </div> </div> <div class="footer-section"> <h4>Quick Links</h4> <ul> <li><a href="#home">Home</a></li> <li><a href="#categories">Categories</a></li> <li><a href="dashboard.html">Dashboard</a></li> <li><a href="items.html">Browse Items</a></li> </ul> </div> <div class="footer-section"> <h4>Support</h4> <ul> <li><a href="#">Help Center</a></li> <li><a href="#">Safety</a></li> <li><a href="#">Terms of Service</a></li> <li><a href="#">Privacy Policy</a></li> </ul> </div> <div class="footer-section"> <h4>Contact</h4> <ul> <li><i class="fas fa-envelope"></i> support@renthub.com</li> <li><i class="fas fa-phone"></i> (555) 123-4567</li> <li><i class="fas fa-map-marker-alt"></i> 123 Rental St, City</li> </ul> </div> </div> <div class="footer-bottom"> <p>&copy; 2024 RentHub. All rights reserved.</p> </div> </div> </footer> <!-- Login Modal --> <div id="loginModal" class="modal"> <div class="modal-content"> <span class="close" onclick="closeModal('loginModal')">&times;</span> <h2>Login to RentHub</h2> <form id="loginForm"> <div class="form-group"> <label for="loginEmail">Email</label> <input type="email" id="loginEmail" required> </div> <div class="form-group"> <label for="loginPassword">Password</label> <input type="password" id="loginPassword" required> </div> <button type="submit" class="btn-primary btn-full">Login</button> </form> <p class="modal-footer">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Sign up</a></p> </div> </div> <!-- Register Modal --> <div id="registerModal" class="modal"> <div class="modal-content"> <span class="close" onclick="closeModal('registerModal')">&times;</span> <h2>Join RentHub</h2> <form id="registerForm"> <div class="form-group"> <label for="registerName">Full Name</label> <input type="text" id="registerName" required> </div> <div class="form-group"> <label for="registerEmail">Email</label> <input type="email" id="registerEmail" required> </div> <div class="form-group"> <label for="registerPhone">Phone</label> <input type="tel" id="registerPhone" required> </div> <div class="form-group"> <label for="registerPassword">Password</label> <input type="password" id="registerPassword" required> </div> <button type="submit" class="btn-primary btn-full">Sign Up</button> </form> <p class="modal-footer">Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Login</a></p> </div> </div>
+  <!-- Footer + Modals -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>RentHub</h3>
+          <p>Making rentals simple, secure, and accessible for everyone.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="items.html">Browse Items</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Safety</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fas fa-envelope"></i> support@renthub.com</li>
+            <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+            <li><i class="fas fa-map-marker-alt"></i> 123 Rental St, City</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 RentHub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal" aria-hidden="true" role="dialog">
+    <div class="modal-content">
+      <button class="close" onclick="closeModal('loginModal')" aria-label="Close">&times;</button>
+      <h2>Login to RentHub</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Login</button>
+      </form>
+      <p class="modal-footer">Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal" aria-hidden="true" role="dialog">
+    <div class="modal-content">
+      <button class="close" onclick="closeModal('registerModal')" aria-label="Close">&times;</button>
+      <h2>Join RentHub</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="registerName">Full Name</label>
+          <input type="text" id="registerName" required>
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="registerPhone">Phone</label>
+          <input type="tel" id="registerPhone" required>
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" required>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Sign Up</button>
+      </form>
+      <p class="modal-footer">Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Login</a></p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
