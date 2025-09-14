@@ -687,3 +687,163 @@ window.scrollToSection = function (id) {
   }
   el.scrollIntoView({ behavior: "smooth", block: "start" })
 }
+
+
+// ==============================
+// Seller Features
+// ==============================
+
+// Handle seller registration (extend handleRegister)
+async function handleRegister(event) {
+  event.preventDefault()
+  const name = document.getElementById("registerName")?.value || ""
+  const email = document.getElementById("registerEmail")?.value || ""
+  const phone = document.getElementById("registerPhone")?.value || ""
+  const password = document.getElementById("registerPassword")?.value || ""
+  const isSeller = document.getElementById("registerSeller")?.checked || false
+
+  try {
+    const response = await fetch(`${API_BASE}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone, password, isSeller }),
+    })
+
+    const data = await response.json().catch(() => ({}))
+    if (response.ok) {
+      if (data.token) localStorage.setItem("token", data.token)
+      currentUser = data.user || data
+      updateUIForLoggedInUser()
+      closeModal("registerModal")
+      showNotification("Registration successful!", "success")
+      if (currentUser?.isSeller) showSellerDashboard()
+      await loadCart()
+    } else {
+      showNotification(data.message || "Registration failed", "error")
+    }
+  } catch (error) {
+    console.error("Registration error:", error)
+    showNotification("Network error. Please try again.", "error")
+  }
+}
+
+// Show seller dashboard modal
+function showSellerDashboard() {
+  const modal = document.getElementById("sellerDashboardModal")
+  if (modal) {
+    modal.style.display = "block"
+    loadSellerItems()
+  }
+}
+
+// Setup add-item form submit
+document.addEventListener("DOMContentLoaded", () => {
+  const addItemForm = document.getElementById("addItemForm")
+  if (addItemForm) {
+    addItemForm.addEventListener("submit", handleAddItem)
+  }
+})
+
+// Handle adding new item
+async function handleAddItem(event) {
+  event.preventDefault()
+  if (!currentUser || !currentUser.isSeller) {
+    showNotification("Only sellers can add items", "error")
+    return
+  }
+
+  const form = event.target
+  const formData = new FormData(form)
+
+  try {
+    const response = await fetch(`${API_BASE}/items`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: formData, // allows file upload
+    })
+
+    const data = await response.json().catch(() => ({}))
+    if (response.ok) {
+      showNotification("Item added successfully!", "success")
+      form.reset()
+      loadSellerItems()
+    } else {
+      showNotification(data.message || "Failed to add item", "error")
+    }
+  } catch (err) {
+    console.error("Add item error:", err)
+    showNotification("Network error. Please try again.", "error")
+  }
+}
+
+// Load seller’s items
+async function loadSellerItems() {
+  if (!currentUser || !currentUser.isSeller) return
+  const tableBody = document.getElementById("sellerItemsList")
+  if (!tableBody) return
+
+  tableBody.innerHTML = "<tr><td colspan='3'>Loading...</td></tr>"
+
+  try {
+    const res = await fetch(`${API_BASE}/items?owner=${currentUser._id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+    const items = await res.json().catch(() => [])
+
+    if (res.ok && Array.isArray(items)) {
+      if (items.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='3'>No items yet</td></tr>"
+        return
+      }
+      tableBody.innerHTML = items
+        .map(
+          (it) => `
+          <tr>
+            <td>${escapeHtml(it.title || "Untitled")}</td>
+            <td>${it.availability ? "Available" : "Not Available"}</td>
+            <td>${it.status || "—"}</td>
+          </tr>`
+        )
+        .join("")
+    } else {
+      tableBody.innerHTML = "<tr><td colspan='3'>Failed to load items</td></tr>"
+    }
+  } catch (err) {
+    console.error("Load seller items error:", err)
+    tableBody.innerHTML = "<tr><td colspan='3'>Error loading items</td></tr>"
+  }
+}
+
+// Extend login → open seller dashboard if seller
+async function handleLogin(event) {
+  event.preventDefault()
+  const email = document.getElementById("loginEmail")?.value || ""
+  const password = document.getElementById("loginPassword")?.value || ""
+
+  try {
+    const response = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    })
+
+    const data = await response.json().catch(() => ({}))
+    if (response.ok) {
+      if (data.token) localStorage.setItem("token", data.token)
+      currentUser = data.user || data
+      updateUIForLoggedInUser()
+      closeModal("loginModal")
+      showNotification("Login successful!", "success")
+      if (currentUser?.isSeller) showSellerDashboard()
+      await loadCart()
+    } else {
+      showNotification(data.message || "Login failed", "error")
+    }
+  } catch (error) {
+    console.error("Login error:", error)
+    showNotification("Network error. Please try again.", "error")
+  }
+}
+

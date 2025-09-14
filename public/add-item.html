@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Item - RentHub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <h2>RentHub</h2>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="items.html">Browse Items</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Add an Item for Rent</h2>
+    <form id="addItemForm" class="form">
+      <input type="text" id="title" placeholder="Item Title" required />
+      <textarea id="description" placeholder="Item Description" required></textarea>
+      
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Tools">Tools</option>
+        <option value="Sports">Sports</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Vehicles">Vehicles</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <input type="number" id="pricePerDay" placeholder="Price Per Day" required />
+      <input type="text" id="city" placeholder="City" />
+      <input type="text" id="state" placeholder="State" />
+
+      <select id="condition">
+        <option value="Good">Good</option>
+        <option value="New">New</option>
+        <option value="Like New">Like New</option>
+        <option value="Fair">Fair</option>
+        <option value="Poor">Poor</option>
+      </select>
+
+      <input type="number" id="deposit" placeholder="Deposit Amount" />
+
+      <button type="submit" class="btn-primary">Add Item</button>
+    </form>
+    <p id="message"></p>
+  </main>
+
+  <script src="add-item.js"></script>
+</body>
+</html>
