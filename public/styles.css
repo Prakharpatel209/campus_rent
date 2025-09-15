@@ -1401,3 +1401,29 @@ p {
   display: block;
   border-radius: 8px;  /* optional */
 }
+/* Ensure modal is scrollable if content exceeds height */
+.modal-content {
+  max-height: 90vh;      /* Take up to 90% of screen height */
+  overflow-y: auto;      /* Scroll vertically if needed */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Optional: Make the table more responsive */
+#sellerItemsList {
+  display: block;
+  max-height: 300px;     /* Or adjust as needed */
+  overflow-y: auto;
+}
+#sellerItemsList tr td {
+  padding: 8px 12px;
+  text-align: left;
+}
+
+#sellerItemsList tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+#sellerItemsList tr:hover {
+  background: #eef6ff;
+}

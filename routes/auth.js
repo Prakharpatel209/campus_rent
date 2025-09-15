@@ -101,7 +101,7 @@ const router = express.Router();
 // -------------------- REGISTER --------------------
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, phone, address } = req.body;
+    const { name, email, password, phone, address, isSeller } = req.body;
 
     // Validate required fields
     if (!name || !email || !password) {
@@ -115,7 +115,14 @@ router.post("/register", async (req, res) => {
     }
 
     // Create new user
-    const user = new User({ name, email, password, phone, address });
+    const user = new User({
+      name,
+      email,
+      password,
+      phone,
+      address,
+      isSeller: !!isSeller, // ✅ save seller flag
+    });
     await user.save();
 
     // Generate JWT token
@@ -132,6 +139,8 @@ router.post("/register", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        isSeller: user.isSeller,
+        isAdmin: user.isAdmin,
       },
     });
   } catch (error) {
@@ -156,7 +165,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Check password (make sure comparePassword exists in User model)
+    // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -176,6 +185,8 @@ router.post("/login", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        isSeller: user.isSeller, // ✅ include seller flag
+        isAdmin: user.isAdmin,
       },
     });
   } catch (error) {
@@ -186,15 +197,21 @@ router.post("/login", async (req, res) => {
 
 // -------------------- GET CURRENT USER --------------------
 router.get("/me", auth, async (req, res) => {
-  console.log("object")
   try {
-    const user = await User.findById( req.body._id).select("password");
-    console.log("user", user)
-    console.log(req.body._id)
+    // ✅ auth middleware should set req.user
+    const user = await User.findById(req.user.id).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user);
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      isSeller: user.isSeller,
+      isAdmin: user.isAdmin,
+    });
   } catch (error) {
     console.error("Get user error:", error.message);
     res.status(500).json({ message: "Server error" });
@@ -202,5 +219,3 @@ router.get("/me", auth, async (req, res) => {
 });
 
 module.exports = router;
-
-

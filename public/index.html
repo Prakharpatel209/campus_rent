@@ -155,9 +155,10 @@
 
       <!-- Add Item Form -->
       <h3>Add New Item</h3>
-      <form id="addItemForm">
-        <input type="text" name="title" placeholder="Item Title" required />
+      <form id="addItemForm" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Item Name" required />
         <textarea name="description" placeholder="Description" required></textarea>
+        
         <select name="category" required>
           <option value="">Select Category</option>
           <option value="Electronics">Electronics</option>
@@ -167,15 +168,26 @@
           <option value="Vehicles">Vehicles</option>
           <option value="Other">Other</option>
         </select>
+
         <input type="number" name="pricePerDay" placeholder="Price Per Day" required />
-        <input type="file" name="images" multiple />
+        
+        <!-- Location -->
+        <input type="text" name="city" placeholder="City" required />
+        <input type="text" name="state" placeholder="State" required />
+
+        <!-- Image Upload -->
+        <label>Upload Image(s)</label>
+        <input type="file" name="images" accept="image/*" multiple required />
+
         <button type="submit" class="btn-primary btn-full">Add Item</button>
       </form>
 
       <!-- Track Items -->
       <h3>Your Items</h3>
       <table>
-        <thead><tr><th>Item</th><th>Status</th><th>Rented/Sold</th></tr></thead>
+        <thead>
+          <tr><th>Item</th><th>Status</th><th>Rented/Sold</th><th>Action</th></tr>
+        </thead>
         <tbody id="sellerItemsList"></tbody>
       </table>
     </div>

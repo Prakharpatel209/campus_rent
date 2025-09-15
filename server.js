@@ -18,11 +18,17 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
+// ✅ Serve uploaded images
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // MongoDB connection
 const MONGODB_URI =
   process.env.NODE_ENV === "production"
     ? process.env.MONGODB_URI // Atlas in production
     : "mongodb://127.0.0.1:27017/item-rental"; // Local in development
+
+mongoose.set("toJSON", { getters: true });
+mongoose.set("toObject", { getters: true });
 
 mongoose
   .connect(MONGODB_URI, {
@@ -32,7 +38,7 @@ mongoose
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err.message);
-    process.exit(1); // Exit if DB connection fails
+    process.exit(1);
   });
 
 // Helper to safely load routes
@@ -54,7 +60,7 @@ function loadRoute(pathName, routePath) {
 loadRoute("/api/auth", "./routes/auth");
 loadRoute("/api/items", "./routes/items");
 loadRoute("/api/rentals", "./routes/rentals");
-loadRoute("/api/cart", "./routes/cart"); // ⬅️ Added Cart route
+loadRoute("/api/cart", "./routes/cart");
 
 // Root route
 app.get("/", (req, res) => {

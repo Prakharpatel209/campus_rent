@@ -30,12 +30,18 @@ const userSchema = new mongoose.Schema(
       state: String,
       zipCode: String,
     },
+
+    // roles/flags
     isAdmin: {
       type: Boolean,
       default: false,
     },
+    isSeller: {
+      type: Boolean,
+      default: false, // ✅ new field
+    },
 
-    // ✅ Add this new cart field
+    // Embedded cart for convenience
     cart: [
       {
         item: { type: mongoose.Schema.Types.ObjectId, ref: "Item" },
@@ -64,4 +70,3 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 }
 
 module.exports = mongoose.model("User", userSchema)
-

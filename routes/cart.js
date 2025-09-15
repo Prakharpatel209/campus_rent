@@ -1,14 +1,15 @@
 const express = require("express");
-const router = express.Router();
+const mongoose = require("mongoose");
 const Cart = require("../models/Cart");
-const auth = require("../middleware/auth"); // middleware to decode JWT
+const auth = require("../middleware/auth");
+const router = express.Router();
 
 // =======================
 // Add item to cart
 // =======================
-/*router.post("/add", auth, async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   try {
-    const userId = req.user.id; // from JWT middleware
+    const userId = req.user.id;
     const { itemId, quantity } = req.body;
 
     if (!itemId) {
@@ -16,7 +17,6 @@ const auth = require("../middleware/auth"); // middleware to decode JWT
     }
 
     let cartItem = await Cart.findOne({ userId, itemId });
-
     if (cartItem) {
       cartItem.quantity += quantity || 1;
       await cartItem.save();
@@ -25,113 +25,79 @@ const auth = require("../middleware/auth"); // middleware to decode JWT
       await cartItem.save();
     }
 
-
-    // populate item details in response
-    await cartItem.populate("itemId");
-
-    res.status(200).json({ message: "Item added to cart", cartItem });
-  } catch (error) {
-    console.error("Cart add error:", error.message);
-    res.status(500).json({ error: "Error adding to cart" });
-  }
-});*/
-
-
-
-router.post("/add", auth, async (req, res) => {
-  try {
-    console.log("Incoming Add to Cart:", req.body, "User:", req.user);
-
-    const userId = req.user.id;
-    const { itemId, quantity } = req.body;
-    console.log("UserID:", userId, "ItemID:", itemId, "Quantity:", quantity);
-    if (!itemId) {
-      return res.status(400).json({ message: "Item ID required" });
-    }
-
-    let cartItem = await Cart.findOne({ userId});
-    console.log("Found Cart Item:", Cart);
-    if (cartItem) {
-      cartItem.quantity += quantity || 1;
-      await cartItem.save();
-    } else {
-      cartItem = new Cart({ userId, itemId, quantity: quantity || 1 });
-      await cartItem.save();
-    }
-
-    res.status(200).json({ message: "Item added to cart", cartItem });
+    await cartItem.populate("itemId", "title pricePerDay images");
+    res.json(cartItem);
   } catch (error) {
     console.error("Cart add error:", error);
     res.status(500).json({ error: "Error adding to cart" });
   }
 });
 
-
 // =======================
 // Get current user cart
 // =======================
 router.get("/", auth, async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    // populate itemId so frontend gets title, price, category, etc.
-    const cart = await Cart.find({ userId }).populate("itemId");
-
+    const cart = await Cart.find({ userId: req.user.id })
+      .populate("itemId", "title pricePerDay images");
     res.json(cart);
   } catch (error) {
-    console.error("Cart fetch error:", error.message);
+    console.error("Cart fetch error:", error);
     res.status(500).json({ error: "Error fetching cart" });
+  }
+});
+
+// =======================
+// Update quantity
+// =======================
+router.put("/:cartId", auth, async (req, res) => {
+  try {
+    const { cartId } = req.params;
+    const { quantity } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      return res.status(400).json({ error: "Invalid cartId" });
+    }
+
+    const cartItem = await Cart.findOne({ _id: cartId, userId: req.user.id });
+    if (!cartItem) return res.status(404).json({ error: "Cart item not found" });
+
+    if (quantity <= 0) {
+      await cartItem.deleteOne();
+      return res.json({ message: "Item removed from cart" });
+    }
+
+    cartItem.quantity = quantity;
+    await cartItem.save();
+    await cartItem.populate("itemId", "title pricePerDay images");
+
+    res.json(cartItem);
+  } catch (error) {
+    console.error("Cart update error:", error);
+    res.status(500).json({ error: "Error updating cart" });
   }
 });
 
 // =======================
 // Remove item from cart
 // =======================
-/*router.delete("/:itemId", auth, async (req, res) => {
+router.delete("/:cartId", auth, async (req, res) => {
   try {
-    const userId = req.user.id;
-    const itemId = req.params.itemId;
+    const { cartId } = req.params;
 
-    await Cart.findOneAndDelete({ userId, itemId });
-    res.json({ message: "Item removed from cart" });
-  } catch (error) {
-    console.error("Cart remove error:", error.message);
-    res.status(500).json({ error: "Error removing item" });
-  }
-});*/
-
-// DELETE /api/cart/:itemId  -> remove the item completely from user's cart (protected)
-router.delete('/:itemId', auth, async (req, res) => {
-  try {
-    const { itemId } = req.params;
-
-    // validate
-    if (!mongoose.Types.ObjectId.isValid(itemId)) {
-      return res.status(400).json({ error: 'Invalid itemId' });
+    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+      return res.status(400).json({ error: "Invalid cartId" });
     }
 
-    const cart = await Cart.findOne({ user: req.userId });
-    if (!cart) return res.status(404).json({ error: 'Cart not found' });
+    const deleted = await Cart.findOneAndDelete({ _id: cartId, userId: req.user.id });
+    if (!deleted) return res.status(404).json({ error: "Cart item not found" });
 
-    const itemExists = cart.items.some(it => it.product.toString() === itemId);
-    if (!itemExists) return res.status(404).json({ error: 'Item not in cart' });
-
-    cart.items = cart.items.filter(it => it.product.toString() !== itemId);
-
-    await cart.save();
-    await cart.populate('items.product');
-
-    return res.json({
-      ok: true,
-      message: 'Item removed from cart',
-      cart,
-    });
-  } catch (err) {
-    console.error('Cart delete error:', err);
-    return res.status(500).json({ error: 'Server error' });
+    res.json({ message: "Item removed from cart" });
+  } catch (error) {
+    console.error("Cart delete error:", error);
+    res.status(500).json({ error: "Error removing item" });
   }
 });
-
 
 module.exports = router;
 
