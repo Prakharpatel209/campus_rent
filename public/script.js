@@ -515,9 +515,97 @@ function closeModal(id) { document.getElementById(id).style.display = "none"; }
 // ==============================
 // Notifications
 // ==============================
-function showNotification(msg, type = "info") {
-  alert(`[${type.toUpperCase()}] ${msg}`); // Simple notification
+function showNotification(message, type = "info", timeout = 4000) {
+  // Create container if not exists
+  let container = document.getElementById("notification-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "notification-container";
+    document.body.appendChild(container);
+  }
+
+  // Create notification
+  const notification = document.createElement("div");
+  notification.className = `notification notification-${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <span>${message}</span>
+      <button class="notification-close">&times;</button>
+    </div>
+  `;
+
+  // Close on click
+  notification.querySelector(".notification-close").addEventListener("click", () => {
+    notification.classList.add("fade-out");
+    setTimeout(() => notification.remove(), 300);
+  });
+
+  container.appendChild(notification);
+
+  // Auto dismiss
+  setTimeout(() => {
+    if (notification.parentElement) {
+      notification.classList.add("fade-out");
+      setTimeout(() => notification.remove(), 300);
+    }
+  }, timeout);
+
+  // Inject styles once
+  if (!document.querySelector("#notification-styles")) {
+    const styles = document.createElement("style");
+    styles.id = "notification-styles";
+    styles.textContent = `
+      #notification-container {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .notification {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        min-width: 280px;
+        max-width: 350px;
+        animation: slideIn 0.3s ease;
+        overflow: hidden;
+      }
+      .notification-success { border-left: 4px solid #10b981; }
+      .notification-error { border-left: 4px solid #ef4444; }
+      .notification-info { border-left: 4px solid #3b82f6; }
+      .notification-content {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Open Sans", sans-serif;
+      }
+      .notification-close {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #6b7280;
+      }
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      .fade-out {
+        animation: fadeOut 0.3s ease forwards;
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; transform: translateX(0); }
+        to { opacity: 0; transform: translateX(100%); }
+      }
+    `;
+    document.head.appendChild(styles);
+  }
 }
+
 
 // ==============================
 // Utilities
